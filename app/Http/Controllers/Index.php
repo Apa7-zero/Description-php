@@ -60,6 +60,11 @@ class Index
         $data=json_decode($request->getContent(),true);
         $month=$data['month'];
 
+        //查看是否是日期格式
+        if(strtotime($month)==false){
+            return ['code'=>500,'msg'=>'时间格式不正确','data'=>''];
+        }
+
         $days=DB::table('month as a')
             ->join('day as b','a.month_id','=','b.month_id')
             ->where('a.month',$month)
