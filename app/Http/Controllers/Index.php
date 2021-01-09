@@ -61,9 +61,12 @@ class Index
         $month=$data['month'];
 
         //查看是否是日期格式
-        if(strtotime($month)==false){
-            return ['code'=>500,'msg'=>'时间格式不正确','data'=>''];
+        $monthTime=strtotime($month);
+        if($monthTime==false){
+            return ['code'=>500,'msg'=>'时间格式不正确','data'=>[]];
         }
+
+        $month=date("Y-m",$monthTime);
 
         $days=DB::table('month as a')
             ->join('day as b','a.month_id','=','b.month_id')
