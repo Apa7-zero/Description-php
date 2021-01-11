@@ -78,7 +78,7 @@ class Index
         if(!$days){
             //获取工作日信息
             $response=$this->client->post('http://Tool.bitefu.net/jiari/',[
-                'query'=>['d'=>$month],
+                'query'=>['d'=>$month,'info'=>1],
                 'timeout' => 3
             ]);
             $working=(string)$response->getBody();
@@ -101,11 +101,12 @@ class Index
                 $day=[];
                 //判断日期是否是工作日
                 $md=$v->format('md');
-                if (isset($working[$md])){
+                $day['is_working']=($working[$md]['type']==0)?1:0;
+                /*if (isset($working[$md])){
                     $day['is_working']=($working[$md]==0)?1:0;
                 }else{
                     $day['is_working']=($v->dayOfWeek==0||$v->dayOfWeek==6)?0:1;
-                }
+                }*/
 
                 //获取某个日期的农历
                 $lunar=$this->lunar->convertSolarToLunar(
